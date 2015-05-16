@@ -1,0 +1,3 @@
+/sync_host/*
+!/sync_host/settings
+.vagrant/
