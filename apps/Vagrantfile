@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+  config.vm.box = "centos7"
+  config.vm.box_url = "https://f0fff3908f081cb6461b407be80daf97f07ac418.googledrive.com/host/0BwtuV7VyVTSkUG1PM3pCeDJ4dVE/centos7.box"
+
+  config.vm.network "public_network"
+  config.vm.synced_folder "../sync_host", "/sync_guest" , create:true
+
+
+  config.vm.define :app do |app|
+    app.vm.network "private_network", ip: "192.168.33.10"
+    app.vm.network "forwarded_port", guest: 3001, host: 3001
+    app.vm.provision :shell, :path => "../sync_host/settings/ins_nvm.sh"
+    app.vm.provision :shell, :path => "../sync_host/settings/set_git.sh"
+  end
+  
+  config.vm.define :db do |db|
+    db.vm.network "private_network", ip: "192.168.33.20"
+    db.vm.network "forwarded_port", guest: 3002, host: 3002
+    #db.vm.provision :shell, :path => "../sync_host/settings/ins_maria10.sh"
+  end
+end
