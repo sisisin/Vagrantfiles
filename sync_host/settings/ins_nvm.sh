@@ -1,4 +1,5 @@
 #!/bin/sh
+
 sudo yum install -y vim wget gcc openssl-devel curl-devel expat-devel cpan gettext asciidoc xmlto bash-completion
 
 cd /usr/local/src/
@@ -26,9 +27,15 @@ git clone git://github.com/creationix/nvm.git /home/vagrant/.nvm
 nvm install v0.12.2
 echo . /home/vagrant/.nvm/nvm.sh >> /home/vagrant/.bashrc
 echo nvm use node >> /home/vagrant/.bashrc
-. ~/.bashrc
+
+    npm install -g express-generator
+    npm install -g gulp
+    npm install -g mocha
+    npm install -g nodemon
+    npm install -g node-inspector
+    npm install -g pm2
+
 sudo chown -R vagrant:vagrant /home/vagrant/.nvm/
 
 sudo firewall-cmd --permanent --add-port=3000/tcp
 
-npm install -g express-generator gulp mocha nodemon node-inspector pm2
