@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+  config.vm.box = "centos7"
+  config.vm.box_url = "https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.1.0/centos-7.0-x86_64.box"
+
+  config.vm.synced_folder "../sync_host", "/sync_guest" , create:true  
+
+  config.vm.network "private_network", ip: "192.168.33.10”
+  
+  config.vm.provision "shell", inline: <<-SHELL
+    echo [ -z "$PS1" ] && return >> /home/vagrant/.bashrc
+    firewall-cmd --permanent --add-port=3000/tcp
+    yum install -y vim git
+    git clone git://github.com/creationix/nvm.git /home/vagrant/.nvm
+    . /home/vagrant/.nvm/nvm.sh
+    nvm install v0.12
+    echo . /home/vagrant/.nvm/nvm.sh >> /home/vagrant/.bashrc
+    echo nvm use node >> /home/vagrant/.bashrc
+    . ~/.bashrc
+    chown -R vagrant:vagrant /home/vagrant/.nvm/
+    
+  SHELL
+  
+end
